@@ -2,8 +2,16 @@ import React from 'react';
 import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import logo from '../../../../src/images/Logo/logo.png';
 import { Link } from 'react-router-dom';
+import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
+import { auth } from '../../../firebase.init';
 
 const Header = () => {
+    // Firebase hook to receive currently signed-in user
+    const [user] = useAuthState(auth);
+
+    // Firebase hook to sugn-out user
+    const [signOut] = useSignOut(auth);
+
     return (
         <Navbar collapseOnSelect expand="lg" data-bs-theme="dark" sticky='top' className="bg-body-tertiary">
             <Container>
@@ -27,7 +35,10 @@ const Header = () => {
                     </Nav>
                     <Nav>
                         <Nav.Link as={Link} to="/about">About</Nav.Link>
-                        <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                        {user ?
+                            <button onClick={() => signOut()} className='btn btn-light'>Sign-out</button>
+                            :
+                            <Nav.Link as={Link} to="/login">Login</Nav.Link>}
                         <Nav.Link eventKey={2} href="#memes">
                             Dank memes
                         </Nav.Link>
