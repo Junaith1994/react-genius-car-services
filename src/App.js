@@ -10,6 +10,7 @@ import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
 import RequireAuth from './Pages/RequireAuth/RequireAuth';
 import CheckOut from './Pages/Checkout/CheckOut';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 function App() {
   return (

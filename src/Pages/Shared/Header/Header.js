@@ -7,7 +7,8 @@ import { auth } from '../../../firebase.init';
 
 const Header = () => {
     // Firebase hook to receive currently signed-in user
-    const [user] = useAuthState(auth);
+    const [user, loading] = useAuthState(auth);
+    console.log(user);
 
     // Firebase hook to sugn-out user
     const [signOut] = useSignOut(auth);
@@ -37,8 +38,8 @@ const Header = () => {
                         <Nav.Link as={Link} to="/about">About</Nav.Link>
                         {user ?
                             <button onClick={() => signOut()} className='btn btn-light'>Sign-out</button>
-                            :
-                            <Nav.Link as={Link} to="/login">Login</Nav.Link>}
+                            : loading ? <button onClick={() => signOut()} className='btn btn-light'>Sign-out</button>
+                            :<Nav.Link as={Link} to="/login">Login</Nav.Link>}
                         <Nav.Link eventKey={2} href="#memes">
                             Dank memes
                         </Nav.Link>

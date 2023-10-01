@@ -4,6 +4,7 @@ import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase.init';
 import SocialLogin from '../Shared/SocialLogin/SocialLogin';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Login = () => {
     // Firebase Hook to sign-in
@@ -49,6 +50,9 @@ const Login = () => {
     // Reset Password
     const passwordReset = async() => {
         const email = emailRef.current.value;
+        if(!email) {
+            return toast("Please Enter Email !!")
+        }
         await sendPasswordResetEmail(email);
     }
 
@@ -72,6 +76,7 @@ const Login = () => {
             </Form>
             <p className='mt-3'>New to Genius-Car Services? <Link to='/register' className='text-danger text-decoration-none' onClick={() => navigateToRegister()}>Please Register</Link></p>
             <p className='mt-3'>Forget password? <Link to='' className='text-danger text-decoration-none' onClick={() => passwordReset()}>Reset Password</Link></p>
+            <ToastContainer></ToastContainer>
             {sending && <p className='text-success'>Reset Mail Sending...</p>}
             <SocialLogin></SocialLogin>
         </div>

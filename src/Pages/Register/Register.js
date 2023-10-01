@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase.init';
 import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 
@@ -16,22 +16,24 @@ const Register = () => {
         user,
         loading,
         error,
-    ] = useCreateUserWithEmailAndPassword(auth);
-
+    ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
+    const [updateProfile, updateError] = useUpdateProfile(auth);
+    console.log(user);
+    console.log(updateError);
     // Form submit handler
-    const handleFormSubmit = event => {
+    const handleFormSubmit = async event => {
         event.preventDefault();
         const email = event.target.email.value;
         const name = event.target.name.value;
         const password = event.target.password.value;
-        if (checked) {
-            createUserWithEmailAndPassword(email, password, name);
-        }
-    }
 
-    // Navigate to home after successfully register
-    if (user) {
-        navigate('/home')
+        await createUserWithEmailAndPassword(email, password);
+        await updateProfile({ displayName: name });
+
+        // Navigate to home after successfully register
+        if (user) {
+            navigate('/home')
+        }
     }
 
     return (
@@ -57,7 +59,7 @@ const Register = () => {
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
                     <Form.Check type="checkbox" className={checked ? 'text-primary' : 'text-danger'} onClick={() => setChecked(!checked)} name='terms' label="Accept Genius Car Terms and Conditions" />
                 </Form.Group>
-                {user ? <p className='text-success'>Account created successfully</p> : <p className='text-danger'>{error}</p>}
+                {user ? <p className='text-success'>Account created successfully</p> : <p className='text-danger'>{error} {updateError?.message}</p>}
                 <Button variant="primary d-block w-50 mx-auto" disabled={!checked} type="submit">
                     Register
                 </Button>
