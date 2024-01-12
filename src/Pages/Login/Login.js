@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase.init';
 import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
 
 const Login = () => {
     // Firebase Hook to sign-in
@@ -24,13 +25,15 @@ const Login = () => {
     const navigate = useNavigate();
 
     // Click Handler
-    const handleFormSubmit = event => {
+    const handleFormSubmit = async event => {
         event.preventDefault();
 
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
-        console.log(error);
-        signInWithEmailAndPassword(email, password);
+        await signInWithEmailAndPassword(email, password);
+        // Creating access token with jwt and setting it in localStorage
+        const { data } = await axios.post('https://genius-car-services-server-2etrtww8e.vercel.app/login', { email });
+        localStorage.setItem('accessToken', data.accessToken);
     }
 
     // Location tracing to redirect to the intended page
@@ -48,9 +51,9 @@ const Login = () => {
     }
 
     // Reset Password
-    const passwordReset = async() => {
+    const passwordReset = async () => {
         const email = emailRef.current.value;
-        if(!email) {
+        if (!email) {
             return toast("Please Enter Email !!")
         }
         await sendPasswordResetEmail(email);

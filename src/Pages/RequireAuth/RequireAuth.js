@@ -9,8 +9,16 @@ const RequireAuth = ({ children }) => {
     console.log(user);
     const location = useLocation();
 
-    if(loading) {
+    if (loading) {
         return <div className='text-center'><Spinner animation="border" variant="primary" /></div>
+    }
+
+    if (!user?.providerData[0]?.providerId === "google.com" && !user.emailVerified) {
+        return (
+            <div>
+                <h2 className='text-danger text-center'>Please verify your email !</h2>
+            </div>
+        )
     }
 
     return user ? children : <Navigate to="/login" state={{ from: location }} replace />;

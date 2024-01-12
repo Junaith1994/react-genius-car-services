@@ -4,17 +4,21 @@ import facebookLogo from '../../../../src/images/Logo/facebook.jpg'
 import githubLogo from '../../../../src/images/Logo/github.png'
 import { useSignInWithGithub, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { auth } from '../../../firebase.init';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const SocialLogin = () => {
     // Necessary hooks
     const [signInWithGoogle, user, error] = useSignInWithGoogle(auth);
     const [signInWithGithub, user1, loading, error1] = useSignInWithGithub(auth);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // Location tracing to redirect to the intended page
+    let from = location.state?.from?.pathname || "/";
 
     // Redirect to home page after google login successfully
     if (user || user1) {
-        navigate('/home');
+        navigate(from, { replace: true });
     }
 
     return (
