@@ -4,7 +4,7 @@ const useServiceDetail = serviceId => {
     const [service, setService] = useState({});
 
     useEffect(() => {
-        const url = `https://genius-car-services-server-2etrtww8e.vercel.app/service/${serviceId}`;
+        const url = `https://genius-car-services-server-orpin.vercel.app/service/${serviceId}`;
         fetch(url)
             .then(res => res.json())
             .then(data => setService(data))

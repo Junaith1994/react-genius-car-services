@@ -32,7 +32,7 @@ const Login = () => {
         const password = passwordRef.current.value;
         await signInWithEmailAndPassword(email, password);
         // Creating access token with jwt and setting it in localStorage
-        const { data } = await axios.post('https://genius-car-services-server-2etrtww8e.vercel.app/login', { email });
+        const { data } = await axios.post('https://genius-car-services-server-orpin.vercel.app/login', { email });
         localStorage.setItem('accessToken', data.accessToken);
     }
 

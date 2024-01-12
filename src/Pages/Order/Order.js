@@ -13,7 +13,7 @@ const Order = () => {
     const { email } = user;
     console.log(orders);
     useEffect(() => {
-        const url = `https://genius-car-services-server-2etrtww8e.vercel.app/orders?email=${email}`;
+        const url = `https://genius-car-services-server-orpin.vercel.app/orders?email=${email}`;
         axiosPrivate.get(url)
         .then(response => setOrders(response.data))
         .catch(error => {

@@ -6,7 +6,7 @@ const ManageServices = () => {
 
     const handleDelete = id => {
         const proceed = window.confirm("Are sure, you want to delete ?")
-        const url = `https://genius-car-services-server-2etrtww8e.vercel.app/service/${id}`;
+        const url = `https://genius-car-services-server-orpin.vercel.app/service/${id}`;
         proceed && fetch(url, {
             method: "DELETE"
         })

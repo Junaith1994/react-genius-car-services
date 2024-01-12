@@ -38,7 +38,7 @@ const CheckOut = () => {
             phone: event.target.phone.value,
         }
         // Posting Order to the server
-        axios.post('https://genius-car-services-server-2etrtww8e.vercel.app/order', order)
+        axios.post('https://genius-car-services-server-orpin.vercel.app/order', order)
             .then(response => {
                 const {data} = response;
                 if(data.insertedId) {

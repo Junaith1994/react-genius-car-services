@@ -10,7 +10,7 @@ const AddService = () => {
     } = useForm()
 
     const onSubmit = (data) => {
-        fetch("https://genius-car-services-server-2etrtww8e.vercel.app/service", {
+        fetch("https://genius-car-services-server-orpin.vercel.app/service", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
