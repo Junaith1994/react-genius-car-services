@@ -4,12 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase.init';
 import SocialLogin from '../Shared/SocialLogin/SocialLogin';
+import useToken from '../hooks/useToken';
 
 const Register = () => {
     // State for check-box
     const [checked, setChecked] = useState(false);
-    // console.log(checked);
     const navigate = useNavigate();
+    
     // Firebase Hook to create user with email & password
     const [
         createUserWithEmailAndPassword,
@@ -17,9 +18,13 @@ const Register = () => {
         loading,
         error,
     ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
+
     const [updateProfile, updateError] = useUpdateProfile(auth);
-    console.log(user);
-    console.log(updateError);
+    
+    // Creating access token for a new user and saving to localStorage
+    const [token] = useToken(user);
+    // console.log(user);
+    // console.log(updateError);
     // Form submit handler
     const handleFormSubmit = async event => {
         event.preventDefault();
@@ -29,11 +34,11 @@ const Register = () => {
 
         await createUserWithEmailAndPassword(email, password);
         await updateProfile({ displayName: name });
+    }
 
-        // Navigate to home after successfully register
-        if (user) {
-            navigate('/home')
-        }
+    // Navigate to home after successfully register
+    if (token) {
+        navigate('/home')
     }
 
     return (

@@ -6,6 +6,7 @@ import { auth } from '../../firebase.init';
 import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
+import useToken from '../hooks/useToken';
 
 const Login = () => {
     // Firebase Hook to sign-in
@@ -18,11 +19,18 @@ const Login = () => {
 
     // password reset
     const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
+    
+    // Creating access token with jwt and setting it in localStorage
+    const [token] = useToken(user);
 
     // Input Field value
     const emailRef = useRef('');
     const passwordRef = useRef('');
     const navigate = useNavigate();
+    
+    // Location tracing to redirect to the intended page
+    const location = useLocation()
+    let from = location.state?.from?.pathname || "/";
 
     // Click Handler
     const handleFormSubmit = async event => {
@@ -31,17 +39,10 @@ const Login = () => {
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
         await signInWithEmailAndPassword(email, password);
-        // Creating access token with jwt and setting it in localStorage
-        const { data } = await axios.post('https://genius-car-services-server-orpin.vercel.app/login', { email });
-        localStorage.setItem('accessToken', data.accessToken);
     }
 
-    // Location tracing to redirect to the intended page
-    const location = useLocation()
-    let from = location.state?.from?.pathname || "/";
-
-    // Navigate to home after successful login
-    if (user) {
+    // Navigate to desired page after successfully getting token
+    if (token) {
         navigate(from, { replace: true });
     }
 

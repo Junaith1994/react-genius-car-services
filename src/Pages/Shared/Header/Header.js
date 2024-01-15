@@ -47,7 +47,7 @@ const Header = () => {
                             <button onClick={() => signOut()} className='btn btn-light'>Sign-out</button>
                             : loading ? <button onClick={() => signOut()} className='btn btn-light'>Sign-out</button>
                                 : <Nav.Link as={Link} to="/login">Login</Nav.Link>}
-                        <h4 className='ms-2 text-primary'>{user?.email}</h4>
+                        <h4 className='ms-2 text-primary'>{user?.displayName || user?.email}</h4>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

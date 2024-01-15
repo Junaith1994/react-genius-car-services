@@ -5,6 +5,7 @@ import githubLogo from '../../../../src/images/Logo/github.png'
 import { useSignInWithGithub, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { auth } from '../../../firebase.init';
 import { useLocation, useNavigate } from 'react-router-dom';
+import useToken from '../../hooks/useToken';
 
 const SocialLogin = () => {
     // Necessary hooks
@@ -13,11 +14,14 @@ const SocialLogin = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    // Creating access token for social login and saving to localStorage
+    const [token] = useToken(user || user1);
+
     // Location tracing to redirect to the intended page
     let from = location.state?.from?.pathname || "/";
 
     // Redirect to home page after google login successfully
-    if (user || user1) {
+    if (token) {
         navigate(from, { replace: true });
     }
 
